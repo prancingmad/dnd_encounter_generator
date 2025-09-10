@@ -1,8 +1,9 @@
-from config import *
+from .config import *
+from .character_classes import BaseClass
 import json
 import os
 
-party_file_path = os.path.join("..", "information", "party.json")
+party_file_path = os.path.join("information", "party.json")
 
 class Player():
     def __init__(self, name, armor_class, magic_items):
@@ -12,8 +13,10 @@ class Player():
         self.classes = []
 
     def add_class(self, class_obj, level):
-        if isinstance(class_obj, BaseClass):
-            self.classes.append(class_obj(level))
+        for cls in self.classes:
+            if cls.name == class_obj.name:
+                raise Exception("Duplicate class name")
+        self.classes.append(class_obj(level))
 
     def get_combat_value(self):
         combat_value = 0
@@ -53,3 +56,14 @@ class Player():
         return player_dict
 
     def save_to_file(self):
+        if os.path.exists(party_file_path):
+            with open(party_file_path, "r") as f:
+                content = f.read().strip()
+                if content:
+                    players_list = json.loads(content)
+                else:
+                    players_list = []
+        player_dict = self.to_dict()
+        players_list.append(player_dict)
+        with open(party_file_path, "w") as f:
+            json.dump(players_list, f, indent=4)

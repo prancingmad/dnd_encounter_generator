@@ -1,4 +1,4 @@
-from config import *
+from .config import *
 
 class BaseClass:
     def __init__(self, name, level, mod):
