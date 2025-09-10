@@ -18,6 +18,9 @@ class Player():
                 raise Exception("Duplicate class name")
         self.classes.append(class_obj(level))
 
+    def update_class_level(self, name, class_name, level):
+        
+
     def get_combat_value(self):
         combat_value = 0
         armor_value = max(0, 0.01 * (self.armor_class - 10))
@@ -26,7 +29,6 @@ class Player():
         monk_level = sum(cls.level for cls in self.classes if cls.name == "Monk")
         pala_level = sum(cls.level for cls in self.classes if cls.name == "Paladin")
         rang_level = sum(cls.level for cls in self.classes if cls.name == "Ranger")
-        rogu_level = sum(cls.level for cls in self.classes if cls.name == "Rogue")
         for cls in self.classes:
             combat_value += cls.get_combat_value()
         if barb_level >= 5 or figh_level >= 5 or monk_level >= 5 or pala_level >= 5 or rang_level >= 5:
@@ -37,8 +39,6 @@ class Player():
             combat_value += SMITE_MOD
         if figh_level >= 2:
             combat_value += SURGE_MOD
-        if rogu_level >= 1:
-            combat_value += SNEAK_MOD
         if monk_level >= 5:
             combat_value += STUN_STRIKE_MOD
         return combat_value + armor_value + (self.magic_items * 0.1)
