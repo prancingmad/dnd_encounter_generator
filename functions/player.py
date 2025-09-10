@@ -18,7 +18,13 @@ class Player():
                 raise Exception("Duplicate class name")
         self.classes.append(class_obj(level))
 
-    def update_class_level(self, name, class_name, level):
+    def update_class_level(self, class_name, level):
+        for cls in self.classes:
+            if cls.name == class_name:
+                cls.level = level
+                break
+        else:
+            raise ValueError(f"{self.name} does not have {class_name}.")
         
 
     def get_combat_value(self):
