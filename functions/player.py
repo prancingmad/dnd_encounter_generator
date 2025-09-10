@@ -14,7 +14,7 @@ class Player():
 
     def add_class(self, class_obj, level):
         for cls in self.classes:
-            if cls.name == class_obj.name:
+            if cls.name == class_obj.__name__:
                 raise Exception("Duplicate class name")
         self.classes.append(class_obj(level))
 
