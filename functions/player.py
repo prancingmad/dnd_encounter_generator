@@ -1,25 +1,31 @@
+from config import *
+import json
+import os
+
+party_file_path = os.path.join("..", "information", "party.json")
+
 class Player():
-    def __init__(self, armor_class, magic_items):
+    def __init__(self, name, armor_class, magic_items):
+        self.name = name
         self.armor_class = armor_class
         self.magic_items = magic_items
+        self.classes = []
 
+    def add_class(self, class_obj, level):
+        if isinstance(class_obj, BaseClass):
+            self.classes.append(class_obj(level))
 
-# placeholder
-
-combat_value = 0
-        arti_level = sum(cls.level for cls in self.classes if cls.name == "Artificer") * ARTI_MOD
-        barb_level = sum(cls.level for cls in self.classes if cls.name == "Barbarian") * BARB_MOD
-        bard_level = sum(cls.level for cls in self.classes if cls.name == "Bard") * BARD_MOD
-        cler_level = sum(cls.level for cls in self.classes if cls.name == "Cleric") * CLER_MOD
-        drui_level = sum(cls.level for cls in self.classes if cls.name == "Druid") * DRUI_MOD
-        figh_level = sum(cls.level for cls in self.classes if cls.name == "Fighter") * FIGH_MOD
-        monk_level = sum(cls.level for cls in self.classes if cls.name == "Monk") * MONK_MOD
-        pala_level = sum(cls.level for cls in self.classes if cls.name == "Paladin") * PALA_MOD
-        rang_level = sum(cls.level for cls in self.classes if cls.name == "Ranger") * RANG_MOD
-        rogu_level = sum(cls.level for cls in self.classes if cls.name == "Rogue") * ROGU_MOD
-        sorc_level = sum(cls.level for cls in self.classes if cls.name == "Sorcerer") * SORC_MOD
-        warl_level = sum(cls.level for cls in self.classes if cls.name == "Warlock") * WARL_MOD
-        wiza_level = sum(cls.level for cls in self.classes if cls.name == "Wizard") * WIZA_MOD
+    def get_combat_value(self):
+        combat_value = 0
+        armor_value = max(0, 0.01 * (self.armor_class - 10))
+        barb_level = sum(cls.level for cls in self.classes if cls.name == "Barbarian")
+        figh_level = sum(cls.level for cls in self.classes if cls.name == "Fighter")
+        monk_level = sum(cls.level for cls in self.classes if cls.name == "Monk")
+        pala_level = sum(cls.level for cls in self.classes if cls.name == "Paladin")
+        rang_level = sum(cls.level for cls in self.classes if cls.name == "Ranger")
+        rogu_level = sum(cls.level for cls in self.classes if cls.name == "Rogue")
+        for cls in self.classes:
+            combat_value += cls.get_combat_value()
         if barb_level >= 5 or figh_level >= 5 or monk_level >= 5 or pala_level >= 5 or rang_level >= 5:
             combat_value += EXTRA_ATTACK_MOD
         if barb_level >= 2:
@@ -32,4 +38,18 @@ combat_value = 0
             combat_value += SNEAK_MOD
         if monk_level >= 5:
             combat_value += STUN_STRIKE_MOD
-        return combat_value + arti_level + barb_level + bard_level + cler_level + drui_level + figh_level + monk_level + pala_level + rang_level + sorc_level + warl_level + wiza_level
+        return combat_value + armor_value + (self.magic_items * 0.1)
+
+    def to_dict(self):
+        player_dict = {}
+        classes_list = []
+        player_dict["name"] = self.name
+        player_dict["armor_class"] = self.armor_class
+        player_dict["magic_items"] = self.magic_items
+        player_dict["combat_value"] = self.get_combat_value()
+        for cls in self.classes:
+            classes_list.append({"name": cls.name, "level": cls.level})
+        player_dict["classes"] = classes_list
+        return player_dict
+
+    def save_to_file(self):
