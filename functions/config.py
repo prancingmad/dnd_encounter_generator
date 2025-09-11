@@ -76,5 +76,5 @@ ARCHIVE_BUTTON_LABELS = [
 ]
 
 # Constants
-WINDOW_SIZE = "400x300"
+WINDOW_SIZE = "700x300"
 BUTTON_PACK_OPTIONS = {"fill": tk.X, "pady": 5, "expand": True}
