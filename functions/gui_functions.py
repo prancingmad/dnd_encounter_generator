@@ -1,11 +1,13 @@
 import tkinter as tk
-from .config import MAIN_PAGE_TEXT
+import tkinter.simpledialog as simpledialog
+from .player import *
 from functions.config import *
-from .add_party_member import *
 from .delete_party_member import *
+from .add_member import add_member
+from .show_error import show_error
 
 # Delete this later, once all the functions have been made
-def placeholder_function(root):
+def placeholder_function(root, left_frame=None, right_frame=None):
     print("Button clicked - function not implemented yet")
 
 def create_scrollable_frame(parent):
@@ -71,7 +73,8 @@ def manage_party_page(root, left_frame, right_frame):
             party_data = json.load(f)
 
             for member in party_data:
-                member_text = f"{member['name']} - AC: {member['armor_class']}, Classes: {', '.join([cls['name'] for cls in member['classes']])}"
+                classes_text = ", ".join([f"{cls['name']} {cls['level']}" for cls in member['classes']])
+                member_text = f"{member['name']} - Combat Value: {member['combat_value']}, AC: {member['armor_class']}, Magic Item Count: {member['magic_items']}, Classes: {classes_text}"
                 label = tk.Label(scroll_frame, text=member_text, anchor="w", justify="left")
                 label.pack(fill="x", pady=2)
         else:
@@ -87,7 +90,7 @@ def manage_party_page(root, left_frame, right_frame):
 
 # Page Functions
 PAGE_FUNCTIONS = {
-    "Add Member": placeholder_function,
+    "Add Member": add_member,
     "Add Monster": placeholder_function,
     "Archive": placeholder_function,
     "Clear Data": placeholder_function,
