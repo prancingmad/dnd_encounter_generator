@@ -31,45 +31,48 @@ SMITE_MOD = 0.25
 STUN_STRIKE_MOD = 0.25
 
 # Button Labels
-MAIN_PAGE_BUTTON_LABELS = {
-    "Manage Party": manage_party_page,
-    "Manage Bestiary": manage_bestiary_page,
-    "Generate Encounter": generate_encounter_page,
-    "Clear Data": clear_data,
-    "Close Program": close_program
-}
-MANAGE_PARTY_BUTTON_LABELS = {
-    "Add Member": add_member,
-    "Update Member": update_member,
-    "Delete Member": delete_member,
-    "Back": main_page
-}
-MANAGE_BESTIARY_BUTTON_LABELS = {
-    "Required Encounters": required_encounters_page,
-    "Random Encounters": random_encounters_page,
-    "Archive": archive_page,
-    "Back": main_page
-}
-REQUIRED_ENCOUNTERS_BUTTON_LABELS = {
-    "Add Monster": add_monster,
-    "Delete Monster": delete_monster,
-    "Move Monster to Random": move_to_random,
-    "Move Monster to Archive": move_to_archive,
-    "Back": manage_bestiary_page
-}
+MAIN_PAGE_BUTTON_LABELS = [
+    "Manage Party",
+    "Manage Bestiary",
+    "Generate Encounter",
+    "Clear Data",
+    "Close Program"
+]
+MANAGE_PARTY_BUTTON_LABELS = [
+    "Add Member",
+    "Update Member",
+    "Delete Member",
+    "Main Page"
+]
+MANAGE_BESTIARY_BUTTON_LABELS = [
+    "Required Encounters",
+    "Random Encounters",
+    "Archive",
+    "Main Page"
+]
+REQUIRED_ENCOUNTERS_BUTTON_LABELS = [
+    "Add Monster",
+    "Delete Monster",
+    "Move Monster to Random",
+    "Move Monster to Archive",
+    "Manage Bestiary",
+    "Main Page"
+]
 RANDOM_ENCOUNTERS_BUTTON_LABELS = [
     "Add Monster",
     "Delete Monster",
     "Move Monster to Required",
     "Move Monster to Archive",
-    "Back"
+    "Manage Bestiary",
+    "Main Page"
 ]
 ARCHIVE_BUTTON_LABELS = [
     "Add Monster",
     "Delete Monster",
     "Move Monster to Required",
     "Move Monster to Random",
-    "Back"
+    "Manage Bestiary",
+    "Main Page"
 ]
 
 # Constants
