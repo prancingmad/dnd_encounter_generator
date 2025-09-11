@@ -3,8 +3,6 @@ from .character_classes import BaseClass
 import json
 import os
 
-party_file_path = os.path.join("information", "party.json")
-
 class Player():
     def __init__(self, name, armor_class, magic_items):
         self.name = name
@@ -62,14 +60,13 @@ class Player():
         return player_dict
 
     def save_to_file(self):
-        if os.path.exists(party_file_path):
-            with open(party_file_path, "r") as f:
+        players_list = []
+        if os.path.exists(PARTY_FILE_PATH):
+            with open(PARTY_FILE_PATH, "r") as f:
                 content = f.read().strip()
                 if content:
                     players_list = json.loads(content)
-                else:
-                    players_list = []
         player_dict = self.to_dict()
         players_list.append(player_dict)
-        with open(party_file_path, "w") as f:
+        with open(PARTY_FILE_PATH, "w") as f:
             json.dump(players_list, f, indent=4)

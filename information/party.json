@@ -1,0 +1,42 @@
+[
+    {
+        "name": "Alice",
+        "armor_class": 15,
+        "magic_items": 2,
+        "combat_value": 3.5,
+        "classes": [
+            {
+                "name": "Fighter",
+                "level": 3
+            }
+        ]
+    },
+    {
+        "name": "Bob",
+        "armor_class": 12,
+        "magic_items": 1,
+        "combat_value": 3.12,
+        "classes": [
+            {
+                "name": "Wizard",
+                "level": 2
+            },
+            {
+                "name": "Rogue",
+                "level": 1
+            }
+        ]
+    },
+    {
+        "name": "Charlie",
+        "armor_class": 10,
+        "magic_items": 0,
+        "combat_value": 5.5,
+        "classes": [
+            {
+                "name": "Fighter",
+                "level": 5
+            }
+        ]
+    }
+]

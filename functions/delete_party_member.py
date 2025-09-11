@@ -3,7 +3,7 @@ import json
 
 party_file_path = os.path.join("information", "party.json")
 
-def remove_party_member(player_name):
+def delete_party_member(player_name):
     if os.path.exists(party_file_path):
         with open(party_file_path, "r") as f:
             content = f.read().strip()
