@@ -37,7 +37,7 @@ def on_button_click(label, root, left_frame=None, right_frame=None):
     else:
         print(f"No function assigned/created for {label}")
 
-def close_program(root):
+def close_program(root, left_frame=None, right_frame=None):
     root.destroy()
 
 def clear_widgets(parent):
