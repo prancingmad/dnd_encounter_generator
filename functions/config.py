@@ -8,6 +8,9 @@ RANDOM_FILE_PATH = os.path.join(BASE_DIR, "information", "random_encounters.json
 REQUIRED_FILE_PATH = os.path.join(BASE_DIR, "information", "required_encounters.json")
 ARCHIVE_FILE_PATH = os.path.join(BASE_DIR, "information", "archive.json")
 
+# Main Page Text
+MAIN_PAGE_TEXT = "Hello and welcome to the D&D 5e Encounter Generator! \nPlaceholder"
+
 # Configure base class modifiers
 ARTI_MOD = 1
 BARB_MOD = 1

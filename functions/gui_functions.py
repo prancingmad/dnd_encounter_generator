@@ -1,4 +1,5 @@
 import tkinter as tk
+from .config import MAIN_PAGE_TEXT
 from functions.config import *
 from .add_party_member import *
 from .delete_party_member import *
@@ -48,7 +49,7 @@ def main_page(root, left_frame, right_frame):
     clear_widgets(left_frame)
     clear_widgets(right_frame)
 
-    placeholder_label = tk.Label(left_frame, text="Placeholder", anchor="nw", justify="left")
+    placeholder_label = tk.Label(left_frame, text=MAIN_PAGE_TEXT, anchor="nw", justify="left")
     placeholder_label.pack(fill=tk.BOTH, expand=True)
 
     button_frame = tk.Frame(right_frame)
@@ -64,12 +65,19 @@ def manage_party_page(root, left_frame, right_frame):
 
     scroll_frame = create_scrollable_frame(left_frame)
     with open(PARTY_FILE_PATH, "r") as f:
-        party_data = json.load(f)
+        content = f.read().strip()
+        if content:
+            f.seek(0)
+            party_data = json.load(f)
 
-    for member in party_data:
-        member_text = f"{member['name']} - AC: {member['armor_class']}, Classes: {', '.join([cls['name'] for cls in member['classes']])}"
-        label = tk.Label(scroll_frame, text=member_text, anchor="w", justify="left")
-        label.pack(fill="x", pady=2)
+            for member in party_data:
+                member_text = f"{member['name']} - AC: {member['armor_class']}, Classes: {', '.join([cls['name'] for cls in member['classes']])}"
+                label = tk.Label(scroll_frame, text=member_text, anchor="w", justify="left")
+                label.pack(fill="x", pady=2)
+        else:
+            placeholder_label = tk.Label(left_frame, text="", anchor="nw", justify="left")
+            placeholder_label.pack(fill=tk.BOTH, expand=True)
+
 
     button_frame = tk.Frame(right_frame)
     button_frame.pack(fill=tk.BOTH, expand=True, padx=20, pady=20)
