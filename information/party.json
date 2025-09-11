@@ -52,14 +52,14 @@
         ]
     },
     {
-        "name": "Test",
-        "armor_class": 15,
-        "magic_items": 15,
-        "combat_value": 17.05,
+        "name": "Carl",
+        "armor_class": 1,
+        "magic_items": 1,
+        "combat_value": 1.1,
         "classes": [
             {
-                "name": "Barbarian",
-                "level": 15
+                "name": "Bard",
+                "level": 1
             }
         ]
     }

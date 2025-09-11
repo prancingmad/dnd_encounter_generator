@@ -5,6 +5,7 @@ from functions.config import *
 from .delete_party_member import *
 from .add_member import add_member
 from .show_error import show_error
+from .update_member import update_member
 
 # Delete this later, once all the functions have been made
 def placeholder_function(root, left_frame=None, right_frame=None):
@@ -112,17 +113,13 @@ PAGE_FUNCTIONS = {
 """
 Each page function will need this to be updated as we make
 PAGE_FUNCTIONS = {
-    "Add Member": add_member,
     "Add Monster": add_monster,
     "Archive": archive_page,
     "Clear Data": clear_data,
-    "Close Program": close_program,
     "Delete Member": delete_member,
     "Delete Monster": delete_monster,
     "Generate Encounter": generate_encounter_page,
-    "Main Page": main_page,
     "Manage Bestiary": manage_bestiary_page,
-    "Manage Party": manage_party_page,
     "Move Monster to Archive": move_to_archive,
     "Move Monster to Random": move_to_random,
     "Move Monster to Required": move_to_required,
