@@ -24,10 +24,21 @@ def add_member(root, left_frame=None, right_frame=None):
             if value.strip() == "":
                 show_error("Missing a Value.", root)
                 return
-
-        ac_val = int(ac_val)
-        magic_items_val = int(magic_items_val)
-        level_val = int(level_val)
+        try:
+            ac_val = int(ac_val)
+        except ValueError:
+            show_error("Armor Class must be a number.", root)
+            return
+        try:
+            magic_items_val = int(magic_items_val)
+        except ValueError:
+            show_error("Magic Item Count must be a number.", root)
+            return
+        try:
+            level_val = int(level_val)
+        except ValueError:
+            show_error("Level must be a number.", root)
+            return
 
         result["data"] = {
             "name": name_val,
