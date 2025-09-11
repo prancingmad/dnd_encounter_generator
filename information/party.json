@@ -38,5 +38,29 @@
                 "level": 5
             }
         ]
+    },
+    {
+        "name": "Billy",
+        "armor_class": 10,
+        "magic_items": 17,
+        "combat_value": 7.2,
+        "classes": [
+            {
+                "name": "Paladin",
+                "level": 5
+            }
+        ]
+    },
+    {
+        "name": "Test",
+        "armor_class": 15,
+        "magic_items": 15,
+        "combat_value": 17.05,
+        "classes": [
+            {
+                "name": "Barbarian",
+                "level": 15
+            }
+        ]
     }
 ]

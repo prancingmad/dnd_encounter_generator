@@ -3,6 +3,8 @@ import tkinter as tk
 import os
 import json
 from .config import *
+from .character_classes import *
+from .player import *
 
 def add_member(root, left_frame=None, right_frame=None):
     popup = tk.Toplevel(root)
@@ -20,48 +22,63 @@ def add_member(root, left_frame=None, right_frame=None):
         class_val = class_entry.get()
         level_val = level_entry.get()
 
+        class_val_input = class_val.lower()
+        valid_map = {
+            "artificer": Artificer,
+            "barbarian": Barbarian,
+            "bard": Bard,
+            "cleric": Cleric,
+            "druid": Druid,
+            "fighter": Fighter,
+            "monk": Monk,
+            "paladin": Paladin,
+            "ranger": Ranger,
+            "rogue": Rogue,
+            "sorcerer": Sorcerer,
+            "warlock": Warlock,
+            "wizard": Wizard,
+        }
+
         for key, value in [("Name", name_val), ("Armor Class", ac_val), ("Magic Items", magic_items_val), ("Class", class_val), ("Level", level_val)]:
             if value.strip() == "":
                 show_error("Missing a Value.", root)
                 return
         try:
             ac_val = int(ac_val)
-        except ValueError:
-            show_error("Armor Class must be a number.", root)
-            return
-        try:
             magic_items_val = int(magic_items_val)
-        except ValueError:
-            show_error("Magic Item Count must be a number.", root)
-            return
-        try:
             level_val = int(level_val)
         except ValueError:
-            show_error("Level must be a number.", root)
+            show_error("Armor Class, Magic Items, and Level must be non-decimal number.", root)
             return
 
-        result["data"] = {
-            "name": name_val,
-            "armor_class": ac_val,
-            "magic_items": magic_items_val,
-            "classes": [{"name": class_val, "level": level_val}]
-        }
+        if class_val_input not in valid_map:
+            show_error(f"Invalid class. Must be one of: {', '.join(VALID_CLASSES)} (Not case sensitive).", root)
+            return
 
+        class_obj = valid_map[class_val_input]
+
+        players_list = []
         if os.path.exists(PARTY_FILE_PATH):
             with open(PARTY_FILE_PATH, "r") as f:
                 content = f.read().strip()
                 if content:
                     players_list = json.loads(content)
-                else:
-                    players_list = []
-            for player in players_list:
-                if player["name"] == name_val:
-                    show_error("Player already exists in party.", root)
-                    return
-        players_list.append(result["data"])
-        with open(PARTY_FILE_PATH, "w") as f:
-            json.dump(players_list, f, indent=4)
-            popup.destroy()
+
+        for player in players_list:
+            if player["name"] == name_val:
+                show_error("Player already exists in party.", root)
+                return
+
+        new_player = Player(name_val, ac_val, magic_items_val)
+        new_player.add_class(class_obj, level_val)
+        new_player.get_combat_value()
+        new_player.save_to_file()
+
+        popup.destroy()
+
+        if left_frame and right_frame:
+            from .gui_functions import manage_party_page
+            manage_party_page(root, left_frame, right_frame)
 
     def on_cancel():
         result["data"] = None
