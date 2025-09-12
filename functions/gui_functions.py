@@ -2,7 +2,7 @@ import tkinter as tk
 import tkinter.simpledialog as simpledialog
 from .player import *
 from functions.config import *
-from .delete_party_member import *
+from .delete_member import delete_member
 from .add_member import add_member
 from .show_error import show_error
 from .update_member import update_member
@@ -96,7 +96,7 @@ PAGE_FUNCTIONS = {
     "Archive": placeholder_function,
     "Clear Data": placeholder_function,
     "Close Program": close_program,
-    "Delete Member": placeholder_function,
+    "Delete Member": delete_member,
     "Delete Monster": placeholder_function,
     "Generate Encounter": placeholder_function,
     "Main Page": main_page,
@@ -116,7 +116,6 @@ PAGE_FUNCTIONS = {
     "Add Monster": add_monster,
     "Archive": archive_page,
     "Clear Data": clear_data,
-    "Delete Member": delete_member,
     "Delete Monster": delete_monster,
     "Generate Encounter": generate_encounter_page,
     "Manage Bestiary": manage_bestiary_page,
@@ -124,7 +123,6 @@ PAGE_FUNCTIONS = {
     "Move Monster to Random": move_to_random,
     "Move Monster to Required": move_to_required,
     "Random Encounters": random_encounters_page,
-    "Required Encounters": required_encounters_page,
-    "Update Member": update_member
+    "Required Encounters": required_encounters_page
 }
 """

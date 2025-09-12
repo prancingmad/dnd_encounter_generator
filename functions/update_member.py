@@ -53,13 +53,9 @@ def update_member(root, left_frame=None, right_frame=None):
                 if content:
                     players_list = json.loads(content)
 
-        if players_list == []:
-            show_error("No players found, add players first!", root)
-            return
-
         found = False
         for player in players_list:
-            if player["name"] == name_val:
+            if player["name"].lower() == name_val.lower():
                 found = True
                 player_update = Player(name_val, player["armor_class"], player["magic_items"])
                 for cls in player["classes"]:
