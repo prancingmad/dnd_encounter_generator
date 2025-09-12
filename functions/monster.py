@@ -1,19 +1,23 @@
 class Monster():
-    def __init__(self, name, creature_type, ac, hp, modifiers, num_resist=0, num_immune=0, num_weak=0, is_spellcaster=False, num_actions, legendary_actions=0):
+    def __init__(self, name, creature_type, ac, hp, modifiers, num_actions, num_resist=0, num_immune=0, num_weak=0, is_spellcaster=False, legendary_actions=0):
         self.name = name
         self.creature_type = creature_type
         self.ac = ac
         self.hp = hp
         self.modifiers = modifiers
+        self.num_actions = num_actions
         self.num_resist = num_resist
         self.num_immune = num_immune
         self.num_weak = num_weak
         self.is_spellcaster = is_spellcaster
-        self.num_actions = num_actions
         self.legendary_actions = legendary_actions
 
     def calculate_modifiers(self, stats_dict):
-        pass
+        total = 0
+        for stat, score in stats_dict.items():
+            total += (score - 10) // 2
+        self.modifiers = total
+        return total
 
     def to_dict(self):
         enemy_dict = {}
