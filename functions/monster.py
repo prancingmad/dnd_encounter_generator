@@ -1,11 +1,12 @@
 class Monster():
-    def __init__(self, name, creature_type, ac, hp, modifiers, num_actions, num_resist=0, num_immune=0, num_weak=0, is_spellcaster=False, legendary_actions=0):
+    def __init__(self, name, creature_type, ac, hp, modifiers, num_actions, challenge_rating, num_resist=0, num_immune=0, num_weak=0, is_spellcaster=False, legendary_actions=0):
         self.name = name
         self.creature_type = creature_type
         self.ac = ac
         self.hp = hp
         self.modifiers = modifiers
         self.num_actions = num_actions
+        self.challenge_rating = challenge_rating
         self.num_resist = num_resist
         self.num_immune = num_immune
         self.num_weak = num_weak
