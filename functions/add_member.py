@@ -64,10 +64,10 @@ def add_member(root, left_frame=None, right_frame=None):
                 if content:
                     players_list = json.loads(content)
 
-        for player in players_list:
-            if player["name"] == name_val:
-                show_error("Player already exists in party.", root)
-                return
+            for player in players_list:
+                if player["name"] == name_val:
+                    show_error("Player already exists in party.", root)
+                    return
 
         new_player = Player(name_val, ac_val, magic_items_val)
         new_player.add_class(class_obj, level_val)

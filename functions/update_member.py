@@ -2,6 +2,7 @@ import tkinter as tk
 import os
 import json
 from .show_error import show_error
+from .player import *
 
 def update_member(root, left_frame=None, right_frame=None):
     popup = tk.Toplevel(root)
@@ -49,9 +50,24 @@ def update_member(root, left_frame=None, right_frame=None):
                 if content:
                     players_list = json.loads(content)
 
-        if players_list = []:
+        if players_list == []:
             show_error("No players found, add players first!", root)
             return
+
+        for player in players_list:
+            if player["name"] == name_val:
+                player_update = Player(name_val, player["armor_class"], player["magic_items"])
+                players_list.remove(player)
+                if ac_val:
+                    player_update["armor_class"] = ac_val
+                if magic_items_val:
+                    player_update["magic_items"] = magic_items_val
+                if class_val:
+                    for cls in player["classes"]:
+                        if cls["name"] == class_val:
+                            cls["level"] = level_val
+                        else:
+                            player["classes"].append[{"name": class_val, "level": level_value}]
 
     def on_cancel():
         result["data"] = None
