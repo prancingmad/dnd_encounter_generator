@@ -3,12 +3,13 @@ import os
 import json
 from .show_error import show_error
 from .player import *
+from .character_classes import *
 
 def update_member(root, left_frame=None, right_frame=None):
     popup = tk.Toplevel(root)
     popup.title("Update Party Member")
 
-    instr_label = tk.Label(popup, text="Which character would you like to update, and what?\nIf adding a multiclass, you can input that here under the Character Class and Level.")
+    instr_label = tk.Label(popup, text="Which character would you like to update, and what?\nIf adding a multiclass, you can input that here under the Character Class and Level.\nIf a section does not need to be updated, it can be left blank!")
     instr_label.pack(pady=10)
 
     result = {"data": None}
@@ -20,7 +21,6 @@ def update_member(root, left_frame=None, right_frame=None):
         class_val = class_entry.get()
         level_val = level_entry.get()
 
-        class_val_input = class_val.lower()
         valid_map = {
             "artificer": Artificer,
             "barbarian": Barbarian,
@@ -37,11 +37,14 @@ def update_member(root, left_frame=None, right_frame=None):
             "wizard": Wizard,
         }
 
-        if class_val_input not in valid_map:
-            show_error(f"Invalid class. Must be one of: {', '.join(VALID_CLASSES)} (Not case sensitive).", root)
-            return
-
-        class_obj = valid_map[class_val_input]
+        if class_val:
+            class_val_input = class_val.lower()
+            if class_val_input not in valid_map:
+                show_error(f"Invalid class. Must be one of: {', '.join(VALID_CLASSES)} (Not case sensitive).", root)
+                return
+            class_obj = valid_map[class_val_input]
+        else:
+            class_obj = None
 
         players_list = []
         if os.path.exists(PARTY_FILE_PATH):
@@ -54,20 +57,52 @@ def update_member(root, left_frame=None, right_frame=None):
             show_error("No players found, add players first!", root)
             return
 
+        found = False
         for player in players_list:
             if player["name"] == name_val:
+                found = True
                 player_update = Player(name_val, player["armor_class"], player["magic_items"])
-                players_list.remove(player)
+                for cls in player["classes"]:
+                    class_type = valid_map[cls["name"].lower()]
+                    player_update.add_class(class_type, cls["level"])
                 if ac_val:
-                    player_update["armor_class"] = ac_val
+                    try:
+                        player_update.armor_class = int(ac_val)
+                    except ValueError:
+                        show_error("Armor Class must be a number.", root)
+                        return
                 if magic_items_val:
-                    player_update["magic_items"] = magic_items_val
-                if class_val:
-                    for cls in player["classes"]:
-                        if cls["name"] == class_val:
-                            cls["level"] = level_val
-                        else:
-                            player["classes"].append[{"name": class_val, "level": level_value}]
+                    try:
+                        player_update.magic_items = int(magic_items_val)
+                    except ValueError:
+                        show_error("Magic Items must be a number.", root)
+                        return
+                if (class_val and not level_val) or (level_val and not class_val):
+                    show_error("If updating Class, both Class and Level must be provided.", root)
+                    return
+                if class_val and level_val:
+                    try:
+                        player_update.update_class_level(class_val, int(level_val))
+                    except ValueError:
+                        player_update.add_class(class_obj, int(level_val))
+
+                players_list.remove(player)
+
+                players_list.append(player_update.to_dict())
+
+                with open(PARTY_FILE_PATH, "w") as f:
+                    json.dump(players_list, f, indent=4)
+
+                popup.destroy()
+
+                if left_frame and right_frame:
+                    from .gui_functions import manage_party_page
+                    manage_party_page(root, left_frame, right_frame)
+                break
+
+        if not found:
+            show_error(f"No player named '{name_val}' found in party.", root)
+            return
 
     def on_cancel():
         result["data"] = None

@@ -107,7 +107,7 @@ PAGE_FUNCTIONS = {
     "Move Monster to Required": placeholder_function,
     "Random Encounters": placeholder_function,
     "Required Encounters": placeholder_function,
-    "Update Member": placeholder_function
+    "Update Member": update_member
 }
 
 """

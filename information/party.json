@@ -1,17 +1,5 @@
 [
     {
-        "name": "Alice",
-        "armor_class": 15,
-        "magic_items": 2,
-        "combat_value": 3.5,
-        "classes": [
-            {
-                "name": "Fighter",
-                "level": 3
-            }
-        ]
-    },
-    {
         "name": "Bob",
         "armor_class": 12,
         "magic_items": 1,
@@ -28,14 +16,18 @@
         ]
     },
     {
-        "name": "Charlie",
-        "armor_class": 10,
-        "magic_items": 0,
-        "combat_value": 5.5,
+        "name": "Carl",
+        "armor_class": 16,
+        "magic_items": 5,
+        "combat_value": 4.81,
         "classes": [
             {
+                "name": "Bard",
+                "level": 1
+            },
+            {
                 "name": "Fighter",
-                "level": 5
+                "level": 3
             }
         ]
     },
@@ -43,23 +35,39 @@
         "name": "Billy",
         "armor_class": 10,
         "magic_items": 17,
-        "combat_value": 7.2,
+        "combat_value": 8.2,
         "classes": [
             {
                 "name": "Paladin",
-                "level": 5
+                "level": 6
             }
         ]
     },
     {
-        "name": "Carl",
-        "armor_class": 1,
-        "magic_items": 1,
-        "combat_value": 1.1,
+        "name": "Alice",
+        "armor_class": 15,
+        "magic_items": 2,
+        "combat_value": 7.75,
         "classes": [
             {
-                "name": "Bard",
-                "level": 1
+                "name": "Fighter",
+                "level": 7
+            }
+        ]
+    },
+    {
+        "name": "Charlie",
+        "armor_class": 12,
+        "magic_items": 0,
+        "combat_value": 18.52,
+        "classes": [
+            {
+                "name": "Fighter",
+                "level": 5
+            },
+            {
+                "name": "Rogue",
+                "level": 13
             }
         ]
     }
