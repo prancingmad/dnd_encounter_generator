@@ -1,6 +1,7 @@
 import tkinter as tk
 import tkinter.simpledialog as simpledialog
 import json
+import os
 from .delete_member import delete_member
 from .add_member import add_member
 from .show_error import show_error
@@ -13,7 +14,9 @@ from .config import (MAIN_PAGE_TEXT,
                      BESTIARY_PAGE_TEXT,
                      MANAGE_BESTIARY_BUTTON_LABELS,
                      ARCHIVE_FILE_PATH,
-                     ARCHIVE_BUTTON_LABELS
+                     ARCHIVE_BUTTON_LABELS,
+                     REQUIRED_FILE_PATH,
+                     RANDOM_FILE_PATH
                      )
 
 # Delete this later, once all the functions have been made
@@ -139,10 +142,44 @@ def manage_bestiary_page(root, left_frame, right_frame):
                         command=lambda l=label: on_button_click(l, root, left_frame, right_frame))
         btn.pack(**BUTTON_PACK_OPTIONS)
 
+def clear_data(root, left_frame, right_frame):
+    popup = tk.Toplevel(root)
+    popup.title("Clear Data Confirmation")
+
+    instr_label = tk.Label(popup, text="This will delete all player and monster data.\nPlease confirm.")
+    instr_label.pack(pady=10)
+
+    result = {"data": None}
+
+    def on_submit():
+        empty_list = []
+        if os.path.exists(PARTY_FILE_PATH):
+            with open(PARTY_FILE_PATH, "w") as f:
+                json.dump(empty_list, f, indent=4)
+        if os.path.exists(RANDOM_FILE_PATH):
+            with open(RANDOM_FILE_PATH, "w") as f:
+                json.dump(empty_list, f, indent=4)
+        if os.path.exists(REQUIRED_FILE_PATH):
+            with open(REQUIRED_FILE_PATH, "w") as f:
+                json.dump(empty_list, f, indent=4)
+        if os.path.exists(ARCHIVE_FILE_PATH):
+            with open(ARCHIVE_FILE_PATH, "w") as f:
+                json.dump(empty_list, f, indent=4)
+        popup.destroy()
+
+    def on_cancel():
+        result["data"] = None
+        popup.destroy()
+
+    submit_btn = tk.Button(popup, text="Confirm", command=on_submit)
+    submit_btn.pack(pady=10)
+    cancel_btn = tk.Button(popup, text="Cancel", command=on_cancel)
+    cancel_btn.pack(pady=10)
+
 # Page Functions
 PAGE_FUNCTIONS = {
     "Add Member": add_member,
-    "Clear Data": placeholder_function,
+    "Clear Data": clear_data,
     "Close Program": close_program,
     "Delete Member": delete_member,
     "Generate Encounter": placeholder_function,
@@ -151,19 +188,3 @@ PAGE_FUNCTIONS = {
     "Manage Party": manage_party_page,
     "Update Member": update_member
 }
-
-"""
-Each page function will need this to be updated as we make
-PAGE_FUNCTIONS = {
-    "Add Monster": add_monster,
-    "Archive": archive_page,
-    "Clear Data": clear_data,
-    "Delete Monster": delete_monster,
-    "Generate Encounter": generate_encounter_page,
-    "Move Monster to Archive": move_to_archive,
-    "Move Monster to Random": move_to_random,
-    "Move Monster to Required": move_to_required,
-    "Random Encounters": random_encounters_page,
-    "Required Encounters": required_encounters_page
-}
-"""

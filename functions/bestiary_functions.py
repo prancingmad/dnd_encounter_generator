@@ -193,13 +193,15 @@ def add_monster(root, left_frame=None, right_frame=None):
                 show_error(f"Monster already exists in {bestiary_flag}", root)
                 return
 
-        new_monster = Monster(name_val, cr_val, actions_val)
         if bestiary_flag == "required":
             try:
-                new_monster["count"] = int(count_val)
+                count_val = int(count_val)
             except ValueError:
                 show_error("Count must be non-decimal number.", root)
                 return
+            new_monster = Monster(name_val, cr_val, actions_val, count_val)
+        else:
+            new_monster = Monster(name_val, cr_val, actions_val)
         new_monster.save_to_file()
 
         popup.destroy()

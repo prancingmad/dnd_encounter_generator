@@ -2,7 +2,7 @@ import tkinter as tk
 
 def show_error(msg, root):
     error_popup = tk.Toplevel(root)
-    error_popup.title("Error")
+    error_popup.title("Message")
     error_popup.resizable(False, False)
 
     error_label = tk.Label(error_popup, text=msg, padx=10, pady=10)
