@@ -5,8 +5,16 @@ from .delete_member import delete_member
 from .add_member import add_member
 from .show_error import show_error
 from .update_member import update_member
-from .config import (MAIN_PAGE_TEXT, MAIN_PAGE_BUTTON_LABELS, BUTTON_PACK_OPTIONS, PARTY_FILE_PATH, MANAGE_PARTY_BUTTON_LABELS, BESTIARY_PAGE_TEXT, MANAGE_BESTIARY_BUTTON_LABELS
-, ARCHIVE_FILE_PATH, ARCHIVE_BUTTON_LABELS)
+from .config import (MAIN_PAGE_TEXT,
+                     MAIN_PAGE_BUTTON_LABELS,
+                     BUTTON_PACK_OPTIONS,
+                     PARTY_FILE_PATH,
+                     MANAGE_PARTY_BUTTON_LABELS,
+                     BESTIARY_PAGE_TEXT,
+                     MANAGE_BESTIARY_BUTTON_LABELS,
+                     ARCHIVE_FILE_PATH,
+                     ARCHIVE_BUTTON_LABELS
+                     )
 
 # Delete this later, once all the functions have been made
 def placeholder_function(root, left_frame=None, right_frame=None):
@@ -39,6 +47,24 @@ def on_button_click(label, root, left_frame=None, right_frame=None):
     elif label == "Delete Monster":
         from .bestiary_functions import delete_monster
         func = delete_monster
+    elif label == "Archive":
+        from .bestiary_functions import archive_page
+        func = archive_page
+    elif label == "Random Encounters":
+        from .bestiary_functions import random_encounters_page
+        func = random_encounters_page
+    elif label == "Required Encounters":
+        from .bestiary_functions import required_encounters_page
+        func = required_encounters_page
+    elif label == "Move Monster to Random":
+        from .bestiary_functions import move_monster_to_random
+        func = move_monster_to_random
+    elif label == "Move Monster to Archive":
+        from .bestiary_functions import move_monster_to_archive
+        func = move_monster_to_archive
+    elif label == "Move Monster to Required":
+        from .bestiary_functions import move_monster_to_required
+        func = move_monster_to_required
     else:
         func = PAGE_FUNCTIONS.get(label)
 
@@ -112,36 +138,10 @@ def manage_bestiary_page(root, left_frame, right_frame):
         btn = tk.Button(button_frame, text=label,
                         command=lambda l=label: on_button_click(l, root, left_frame, right_frame))
         btn.pack(**BUTTON_PACK_OPTIONS)
-        
-def archive_page(root, left_frame, right_frame):
-    clear_widgets(left_frame)
-    clear_widgets(right_frame)
-
-    scroll_frame = create_scrollable_frame(left_frame)
-    with open(ARCHIVE_FILE_PATH, "r") as f:
-        content = f.read().strip()
-        if content:
-            f.seek(0)
-            archive_data = json.load(f)
-
-            for creature in archive_data:
-                creature_text = f"{creature['name']} - Challenge Rating: {creature['challenge_rating']}"
-                label = tk.Label(scroll_frame, text=creature_text, anchor="w", justify="left")
-                label.pack(fill="x", pady=2)
-        else:
-            placeholder_label = tk.Label(left_frame, text="", anchor="nw", justify="left")
-            placeholder_label.pack(fill=tk.BOTH, expand=True)
-
-    button_frame = tk.Frame(right_frame)
-    button_frame.pack(fill=tk.BOTH, expand=True, padx=20, pady=20)
-    for label in ARCHIVE_BUTTON_LABELS:
-        btn = tk.Button(button_frame, text=label, command=lambda l=label: on_button_click(l, root, left_frame, right_frame))
-        btn.pack(**BUTTON_PACK_OPTIONS)
 
 # Page Functions
 PAGE_FUNCTIONS = {
     "Add Member": add_member,
-    "Archive": archive_page,
     "Clear Data": placeholder_function,
     "Close Program": close_program,
     "Delete Member": delete_member,
@@ -149,11 +149,6 @@ PAGE_FUNCTIONS = {
     "Main Page": main_page,
     "Manage Bestiary": manage_bestiary_page,
     "Manage Party": manage_party_page,
-    "Move Monster to Archive": placeholder_function,
-    "Move Monster to Random": placeholder_function,
-    "Move Monster to Required": placeholder_function,
-    "Random Encounters": placeholder_function,
-    "Required Encounters": placeholder_function,
     "Update Member": update_member
 }
 
