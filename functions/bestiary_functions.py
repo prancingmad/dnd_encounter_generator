@@ -16,14 +16,16 @@ from .config import (
 bestiary_flag = "archive"
 
 class Monster():
-    def __init__(self, name, challenge_rating):
+    def __init__(self, name, challenge_rating, actions):
         self.name = name
         self.challenge_rating = challenge_rating
+        self.actions = actions
 
     def to_dict(self):
         enemy_dict = {}
         enemy_dict["name"] = self.name
         enemy_dict["challenge_rating"] = self.challenge_rating
+        enemy_dict["actions"] = self.actions
         return enemy_dict
 
     def save_to_file(self):
@@ -63,7 +65,7 @@ def archive_page(root, left_frame, right_frame):
             archive_data = json.load(f)
 
             for creature in archive_data:
-                creature_text = f"{creature['name']} - Challenge Rating: {creature['challenge_rating']}"
+                creature_text = f"{creature['name']} - Challenge Rating: {creature['challenge_rating']}, Actions: {creature['actions']}"
                 label = tk.Label(scroll_frame, text=creature_text, anchor="w", justify="left")
                 label.pack(fill="x", pady=2)
         else:
@@ -90,7 +92,7 @@ def random_encounters_page(root, left_frame, right_frame):
             random_data = json.load(f)
 
             for creature in random_data:
-                creature_text = f"{creature['name']} - Challenge Rating: {creature['challenge_rating']}"
+                creature_text = f"{creature['name']} - Challenge Rating: {creature['challenge_rating']}, Actions: {creature['actions']}"
                 label = tk.Label(scroll_frame, text=creature_text, anchor="w", justify="left")
                 label.pack(fill="x", pady=2)
         else:
@@ -117,7 +119,7 @@ def required_encounters_page(root, left_frame, right_frame):
             required_data = json.load(f)
 
             for creature in required_data:
-                creature_text = f"{creature['name']} - Challenge Rating: {creature['challenge_rating']}"
+                creature_text = f"{creature['name']} - Challenge Rating: {creature['challenge_rating']}, Actions: {creature['actions']}"
                 label = tk.Label(scroll_frame, text=creature_text, anchor="w", justify="left")
                 label.pack(fill="x", pady=2)
         else:
@@ -144,12 +146,13 @@ def add_monster(root, left_frame=None, right_frame=None):
 
     result = {"data": None}
 
-    instr_label = tk.Label(popup, text="Adding a monster.\nFor Challenge Rating, please put either an integer or a decimal.\n(0.25 instead of 1/4)")
+    instr_label = tk.Label(popup, text="Adding a monster.\nFor Challenge Rating, please put either an integer or a decimal.\n(0.25 instead of 1/4)\nFor Actions, this is the number of (non-legendary action) attacks they get per round")
     instr_label.pack(pady=10)
 
     def on_submit():
         name_val = name_entry.get().strip().title()
         cr_val = cr_entry.get()
+        actions_val = actions_entry.get()
 
         for key, value in [("Name", name_val), ("Challenge Rating", cr_val)]:
             if value.strip() == "":
@@ -168,7 +171,7 @@ def add_monster(root, left_frame=None, right_frame=None):
                 show_error(f"Monster already exists in {bestiary_flag}", root)
                 return
 
-        new_monster = Monster(name_val, cr_val)
+        new_monster = Monster(name_val, cr_val, actions_val)
         new_monster.save_to_file()
 
         popup.destroy()
@@ -194,6 +197,10 @@ def add_monster(root, left_frame=None, right_frame=None):
     cr_label.pack()
     cr_entry = tk.Entry(popup)
     cr_entry.pack()
+    actions_label = tk.Label(popup, text="Actions:")
+    actions_label.pack()
+    actions_entry = tk.Entry(popup)
+    actions_entry.pack()
     submit_btn = tk.Button(popup, text="Submit", command=on_submit)
     submit_btn.pack(pady=10)
     cancel_btn = tk.Button(popup, text="Cancel", command=on_cancel)
@@ -311,7 +318,7 @@ def move_monster_to_random(root, left_frame=None, right_frame=None):
                         show_error(f"Monster already exists in random", root)
                         return
 
-                new_monster = Monster(transferred_monster["name"], transferred_monster["challenge_rating"])
+                new_monster = Monster(transferred_monster["name"], transferred_monster["challenge_rating"], transferred_monster["actions"])
                 temp_flag = bestiary_flag
                 bestiary_flag = "random"
                 new_monster.save_to_file()
@@ -389,7 +396,7 @@ def move_monster_to_archive(root, left_frame=None, right_frame=None):
                         show_error(f"Monster already exists in archive", root)
                         return
 
-                new_monster = Monster(transferred_monster["name"], transferred_monster["challenge_rating"])
+                new_monster = Monster(transferred_monster["name"], transferred_monster["challenge_rating"], transferred_monster["actions"])
                 temp_flag = bestiary_flag
                 bestiary_flag = "archive"
                 new_monster.save_to_file()
@@ -467,7 +474,7 @@ def move_monster_to_required(root, left_frame=None, right_frame=None):
                         show_error(f"Monster already exists in required", root)
                         return
 
-                new_monster = Monster(transferred_monster["name"], transferred_monster["challenge_rating"])
+                new_monster = Monster(transferred_monster["name"], transferred_monster["challenge_rating"], transferred_monster["actions"])
                 temp_flag = bestiary_flag
                 bestiary_flag = "required"
                 new_monster.save_to_file()
