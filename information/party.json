@@ -3,12 +3,12 @@
         "name": "Jimmy",
         "armor_class": 10,
         "magic_items": 0,
-        "combat_value": 1.0,
+        "combat_value": 2.25,
         "actions": 1.5,
         "classes": [
             {
                 "name": "Fighter",
-                "level": 1
+                "level": 2
             }
         ]
     },
@@ -16,25 +16,12 @@
         "name": "Bobby",
         "armor_class": 10,
         "magic_items": 0,
-        "combat_value": 1.0,
+        "combat_value": 2.0,
         "actions": 1.5,
         "classes": [
             {
                 "name": "Cleric",
-                "level": 1
-            }
-        ]
-    },
-    {
-        "name": "Shelly",
-        "armor_class": 10,
-        "magic_items": 0,
-        "combat_value": 1.0,
-        "actions": 1.5,
-        "classes": [
-            {
-                "name": "Bard",
-                "level": 1
+                "level": 2
             }
         ]
     },
@@ -42,12 +29,25 @@
         "name": "Trogdor",
         "armor_class": 10,
         "magic_items": 0,
-        "combat_value": 1.0,
+        "combat_value": 2.0,
         "actions": 1.5,
         "classes": [
             {
                 "name": "Sorcerer",
-                "level": 1
+                "level": 2
+            }
+        ]
+    },
+    {
+        "name": "Shelly",
+        "armor_class": 10,
+        "magic_items": 0,
+        "combat_value": 2.0,
+        "actions": 1.5,
+        "classes": [
+            {
+                "name": "Bard",
+                "level": 2
             }
         ]
     }

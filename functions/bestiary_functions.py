@@ -16,16 +16,20 @@ from .config import (
 bestiary_flag = "archive"
 
 class Monster():
-    def __init__(self, name, challenge_rating, actions):
+    def __init__(self, name, challenge_rating, actions, count=0):
         self.name = name
         self.challenge_rating = challenge_rating
         self.actions = actions
+        self.count = count
 
     def to_dict(self):
+        global bestiary_flag
         enemy_dict = {}
         enemy_dict["name"] = self.name
         enemy_dict["challenge_rating"] = self.challenge_rating
         enemy_dict["actions"] = self.actions
+        if bestiary_flag == "required":
+            enemy_dict["count"] = self.count
         return enemy_dict
 
     def save_to_file(self):
@@ -119,7 +123,7 @@ def required_encounters_page(root, left_frame, right_frame):
             required_data = json.load(f)
 
             for creature in required_data:
-                creature_text = f"{creature['name']} - Challenge Rating: {creature['challenge_rating']}, Actions: {creature['actions']}"
+                creature_text = f"{creature['name']} - Challenge Rating: {creature['challenge_rating']}, Actions: {creature['actions']}, Creature Count: {creature['count']}"
                 label = tk.Label(scroll_frame, text=creature_text, anchor="w", justify="left")
                 label.pack(fill="x", pady=2)
         else:
@@ -150,9 +154,12 @@ def add_monster(root, left_frame=None, right_frame=None):
     instr_label.pack(pady=10)
 
     def on_submit():
+        global bestiary_flag
         name_val = name_entry.get().strip().title()
         cr_val = cr_entry.get()
         actions_val = actions_entry.get()
+        if bestiary_flag == "required":
+            count_val = count_entry.get()
 
         for key, value in [("Name", name_val), ("Challenge Rating", cr_val)]:
             if value.strip() == "":
@@ -172,6 +179,12 @@ def add_monster(root, left_frame=None, right_frame=None):
                 return
 
         new_monster = Monster(name_val, cr_val, actions_val)
+        if bestiary_flag == "required":
+            try:
+                new_monster["count"] = int(count_val)
+            except ValueError:
+                show_error("Count must be non-decimal number.", root)
+                return
         new_monster.save_to_file()
 
         popup.destroy()
@@ -201,6 +214,11 @@ def add_monster(root, left_frame=None, right_frame=None):
     actions_label.pack()
     actions_entry = tk.Entry(popup)
     actions_entry.pack()
+    if bestiary_flag == "required":
+        count_label = tk.Label(popup, text="Encounter Count:")
+        count_label.pack()
+        count_entry = tk.Entry(popup)
+        count_entry.pack()
     submit_btn = tk.Button(popup, text="Submit", command=on_submit)
     submit_btn.pack(pady=10)
     cancel_btn = tk.Button(popup, text="Cancel", command=on_cancel)
@@ -447,6 +465,7 @@ def move_monster_to_required(root, left_frame=None, right_frame=None):
     def on_submit():
         global bestiary_flag
         name_val = name_entry.get()
+        count_val = count_entry.get()
 
         monster_list_from = []
         if os.path.exists(file_path_from):
@@ -474,7 +493,7 @@ def move_monster_to_required(root, left_frame=None, right_frame=None):
                         show_error(f"Monster already exists in required", root)
                         return
 
-                new_monster = Monster(transferred_monster["name"], transferred_monster["challenge_rating"], transferred_monster["actions"])
+                new_monster = Monster(transferred_monster["name"], transferred_monster["challenge_rating"], transferred_monster["actions"], count_val)
                 temp_flag = bestiary_flag
                 bestiary_flag = "required"
                 new_monster.save_to_file()
@@ -502,6 +521,10 @@ def move_monster_to_required(root, left_frame=None, right_frame=None):
     name_entry = tk.Entry(popup)
     name_entry.pack()
     name_entry.focus_set()
+    count_label = tk.Label(popup, text="Encounter Count:")
+    count_label.pack()
+    count_entry = tk.Entry(popup)
+    count_entry.pack()
     submit_btn = tk.Button(popup, text="Submit", command=on_submit)
     submit_btn.pack(pady=10)
     cancel_btn = tk.Button(popup, text="Cancel", command=on_cancel)
