@@ -16,10 +16,10 @@ def update_member(root, left_frame=None, right_frame=None):
     result = {"data": None}
 
     def on_submit():
-        name_val = name_entry.get()
+        name_val = name_entry.get().strip().title()
         ac_val = ac_entry.get()
         magic_items_val = items_entry.get()
-        class_val = class_entry.get()
+        class_val = class_entry.get().strip().title()
         level_val = level_entry.get()
 
         valid_map = {

@@ -19,7 +19,7 @@ def add_member(root, left_frame=None, right_frame=None):
         name_val = name_entry.get().strip().title()
         ac_val = ac_entry.get()
         magic_items_val = items_entry.get()
-        class_val = class_entry.get()
+        class_val = class_entry.get().strip().title()
         level_val = level_entry.get()
 
         class_val_input = class_val.lower()
@@ -72,6 +72,7 @@ def add_member(root, left_frame=None, right_frame=None):
         new_player = Player(name_val, ac_val, magic_items_val)
         new_player.add_class(class_obj, level_val)
         new_player.get_combat_value()
+        new_player.get_action_count()
         new_player.save_to_file()
 
         popup.destroy()
