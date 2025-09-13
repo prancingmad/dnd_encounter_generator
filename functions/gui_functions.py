@@ -6,6 +6,7 @@ from .delete_member import delete_member
 from .add_member import add_member
 from .show_error import show_error
 from .update_member import update_member
+from .bestiary_functions import *
 
 # Delete this later, once all the functions have been made
 def placeholder_function(root, left_frame=None, right_frame=None):
