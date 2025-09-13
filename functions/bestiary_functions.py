@@ -1,10 +1,11 @@
-from .config import *
-from .gui_functions import *
+import json
+import tkinter as tk
+import os
+from .gui_functions import clear_widgets, create_scrollable_frame
 from .show_error import show_error
+from .config import ARCHIVE_FILE_PATH, ARCHIVE_BUTTON_LABELS, BUTTON_PACK_OPTIONS
 
 bestiary_flag = "archive"
-
-from .config import *
 
 class Monster():
     def __init__(self, name, challenge_rating):
@@ -21,16 +22,20 @@ class Monster():
         global bestiary_flag
         if bestiary_flag == "archive":
             file_path = ARCHIVE_FILE_PATH
+        else:
+            return
+
         monster_list = []
-        if os.path.exists(PARTY_FILE_PATH):
-            with open(PARTY_FILE_PATH, "r") as f:
+        if os.path.exists(file_path):
+            with open(file_path, "r") as f:
                 content = f.read().strip()
                 if content:
-                    players_list = json.loads(content)
-        player_dict = self.to_dict()
-        players_list.append(player_dict)
-        with open(PARTY_FILE_PATH, "w") as f:
-            json.dump(players_list, f, indent=4)
+                    monster_list = json.loads(content)
+
+        monster_list.append(self.to_dict())
+
+        with open(file_path, "w") as f:
+            json.dump(monster_list, f, indent=4)
 
 def archive_page(root, left_frame, right_frame):
     clear_widgets(left_frame)
@@ -69,7 +74,7 @@ def add_monster(root, left_frame=None, right_frame=None):
 
     result = {"data": None}
 
-    instr_label = tk.Label(popup, text="Adding a monster.")
+    instr_label = tk.Label(popup, text="Adding a monster.\nFor Challenge Rating, please put either an integer or a decimal.\n(0.25 instead of 1/4)")
     instr_label.pack(pady=10)
 
     def on_submit():
@@ -94,4 +99,32 @@ def add_monster(root, left_frame=None, right_frame=None):
                 return
 
         new_monster = Monster(name_val, cr_val)
+        new_monster.save_to_file()
+
+        popup.destroy()
+
+        if left_frame and right_frame:
+            archive_page(root, left_frame, right_frame)
+
+    def on_cancel():
+        result["data"] = None
+        popup.destroy()
+
+    name_label = tk.Label(popup, text="Name:")
+    name_label.pack()
+    name_entry = tk.Entry(popup)
+    name_entry.pack()
+    name_entry.focus_set()
+    cr_label = tk.Label(popup, text="Challenge Rating:")
+    cr_label.pack()
+    cr_entry = tk.Entry(popup)
+    cr_entry.pack()
+    submit_btn = tk.Button(popup, text="Submit", command=on_submit)
+    submit_btn.pack(pady=10)
+    cancel_btn = tk.Button(popup, text="Cancel", command=on_cancel)
+    cancel_btn.pack(pady=10)
+
+    popup.grab_set()
+    root.wait_window(popup)
+    return result["data"]
 

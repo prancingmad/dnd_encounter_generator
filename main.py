@@ -1,8 +1,8 @@
 import json
-
-from functions.gui_functions import *
-from functions.config import *
 import tkinter as tk
+import os
+from functions.gui_functions import main_page
+from functions.config import PARTY_FILE_PATH, REQUIRED_FILE_PATH, ARCHIVE_FILE_PATH, RANDOM_FILE_PATH, WINDOW_SIZE
 
 if not os.path.exists("information"):
     os.makedirs("information")

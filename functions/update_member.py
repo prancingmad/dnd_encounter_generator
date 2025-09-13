@@ -2,8 +2,9 @@ import tkinter as tk
 import os
 import json
 from .show_error import show_error
-from .player import *
-from .character_classes import *
+from .config import (PARTY_FILE_PATH, VALID_CLASSES, ARTI_MOD, BARB_MOD, BARD_MOD, CLER_MOD, DRUI_MOD, FIGH_MOD, MONK_MOD, PALA_MOD, RANG_MOD, ROGU_MOD, SORC_MOD, WARL_MOD, WIZA_MOD)
+from .player import Player
+from .character_classes import (Artificer, Barbarian, Bard, Cleric, Druid, Fighter, Monk, Paladin, Ranger, Rogue, Sorcerer, Warlock, Wizard)
 
 def update_member(root, left_frame=None, right_frame=None):
     popup = tk.Toplevel(root)
@@ -77,9 +78,11 @@ def update_member(root, left_frame=None, right_frame=None):
                     show_error("If updating Class, both Class and Level must be provided.", root)
                     return
                 if class_val and level_val:
-                    try:
+                    existing_classes = [cls.name.lower() for cls in player_update.classes]
+                    class_val_lower = class_val.lower()
+                    if class_val_lower in existing_classes:
                         player_update.update_class_level(class_val, int(level_val))
-                    except ValueError:
+                    else:
                         player_update.add_class(class_obj, int(level_val))
 
                 players_list.remove(player)

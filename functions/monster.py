@@ -1,4 +1,5 @@
-from .config import *
+import os
+import json
 
 class Monster():
     def __init__(self, name, challenge_rating):
@@ -17,8 +18,8 @@ class Monster():
             with open(PARTY_FILE_PATH, "r") as f:
                 content = f.read().strip()
                 if content:
-                    players_list = json.loads(content)
-        player_dict = self.to_dict()
+                    monster_list = json.loads(content)
+        _dict = self.to_dict()
         players_list.append(player_dict)
         with open(PARTY_FILE_PATH, "w") as f:
             json.dump(players_list, f, indent=4)

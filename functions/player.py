@@ -1,7 +1,7 @@
-from .config import *
-from .character_classes import BaseClass
 import json
 import os
+from .character_classes import BaseClass
+from .config import PARTY_FILE_PATH
 
 class Player():
     def __init__(self, name, armor_class, magic_items):
@@ -17,8 +17,9 @@ class Player():
         self.classes.append(class_obj(level))
 
     def update_class_level(self, class_name, level):
+        class_name_lower = class_name.lower()
         for cls in self.classes:
-            if cls.name == class_name:
+            if cls.name.lower() == class_name_lower:
                 cls.level = level
                 break
         else:

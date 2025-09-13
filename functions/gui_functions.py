@@ -1,12 +1,12 @@
 import tkinter as tk
 import tkinter.simpledialog as simpledialog
-from .player import *
-from .config import *
+import json
 from .delete_member import delete_member
 from .add_member import add_member
 from .show_error import show_error
 from .update_member import update_member
-from .bestiary_functions import *
+from .config import (MAIN_PAGE_TEXT, MAIN_PAGE_BUTTON_LABELS, BUTTON_PACK_OPTIONS, PARTY_FILE_PATH, MANAGE_PARTY_BUTTON_LABELS, BESTIARY_PAGE_TEXT, MANAGE_BESTIARY_BUTTON_LABELS
+, ARCHIVE_FILE_PATH, ARCHIVE_BUTTON_LABELS)
 
 # Delete this later, once all the functions have been made
 def placeholder_function(root, left_frame=None, right_frame=None):
@@ -33,7 +33,12 @@ def create_scrollable_frame(parent):
     return scrollable_frame
 
 def on_button_click(label, root, left_frame=None, right_frame=None):
-    func = PAGE_FUNCTIONS.get(label)
+    if label == "Add Monster":
+        from .bestiary_functions import add_monster
+        func = add_monster
+    else:
+        func = PAGE_FUNCTIONS.get(label)
+
     if func:
         if left_frame and right_frame:
             func(root, left_frame, right_frame)
@@ -134,7 +139,6 @@ def archive_page(root, left_frame, right_frame):
 # Page Functions
 PAGE_FUNCTIONS = {
     "Add Member": add_member,
-    "Add Monster": placeholder_function,
     "Archive": archive_page,
     "Clear Data": placeholder_function,
     "Close Program": close_program,

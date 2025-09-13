@@ -1,8 +1,8 @@
 import os
 import json
 import tkinter as tk
-from .config import *
 from .show_error import show_error
+from .config import PARTY_FILE_PATH
 
 def delete_member(root, left_frame=None, right_frame=None):
     popup = tk.Toplevel(root)

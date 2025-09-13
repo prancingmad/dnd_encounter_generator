@@ -1,10 +1,10 @@
-from .show_error import show_error
 import tkinter as tk
 import os
 import json
-from .config import *
-from .character_classes import *
-from .player import *
+from .show_error import show_error
+from .config import (PARTY_FILE_PATH, VALID_CLASSES, ARTI_MOD, BARB_MOD, BARD_MOD, CLER_MOD, DRUI_MOD, FIGH_MOD, MONK_MOD, PALA_MOD, RANG_MOD, ROGU_MOD, SORC_MOD, WARL_MOD, WIZA_MOD)
+from .player import Player
+from .character_classes import (Artificer, Barbarian, Bard, Cleric, Druid, Fighter, Monk, Paladin, Ranger, Rogue, Sorcerer, Warlock, Wizard)
 
 def add_member(root, left_frame=None, right_frame=None):
     popup = tk.Toplevel(root)
@@ -16,7 +16,7 @@ def add_member(root, left_frame=None, right_frame=None):
     instr_label.pack(pady=10)
 
     def on_submit():
-        name_val = name_entry.get()
+        name_val = name_entry.get().strip().title()
         ac_val = ac_entry.get()
         magic_items_val = items_entry.get()
         class_val = class_entry.get()
