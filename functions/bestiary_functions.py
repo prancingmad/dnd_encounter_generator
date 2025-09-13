@@ -1,7 +1,7 @@
 import json
 import tkinter as tk
 import os
-from .gui_functions import clear_widgets, create_scrollable_frame
+from .gui_functions import clear_widgets, create_scrollable_frame, on_button_click
 from .show_error import show_error
 from .config import ARCHIVE_FILE_PATH, ARCHIVE_BUTTON_LABELS, BUTTON_PACK_OPTIONS
 
@@ -78,7 +78,7 @@ def add_monster(root, left_frame=None, right_frame=None):
     instr_label.pack(pady=10)
 
     def on_submit():
-        name_val = name_entry.get()
+        name_val = name_entry.get().strip().title()
         cr_val = cr_entry.get()
 
         for key, value in [("Name", name_val), ("Challenge Rating", cr_val)]:
@@ -128,3 +128,56 @@ def add_monster(root, left_frame=None, right_frame=None):
     root.wait_window(popup)
     return result["data"]
 
+def delete_monster(root, left_frame=None, right_frame=None):
+    global bestiary_flag
+    if bestiary_flag == "archive":
+        file_path = ARCHIVE_FILE_PATH
+
+    popup = tk.Toplevel(root)
+    popup.title(f"Delete Monster from {bestiary_flag}")
+
+    instr_label = tk.Label(popup, text="Please type the name of the monster you wish to delete.\nThis is a permanent action, and they will have to be added again if needed!")
+    instr_label.pack(pady=10)
+
+    result = {"data": None}
+
+    def on_submit():
+        name_val = name_entry.get()
+
+        monster_list = []
+        if os.path.exists(file_path):
+            with open(file_path, "r") as f:
+                content = f.read().strip()
+                if content:
+                    monster_list = json.loads(content)
+
+        found = False
+        for mon in monster_list:
+            if mon["name"].lower() == name_val.lower():
+                monster_list.remove(mon)
+                with open(file_path, "w") as f:
+                    json.dump(monster_list, f, indent=4)
+                popup.destroy()
+
+                if left_frame and right_frame:
+                    archive_page(root, left_frame, right_frame)
+                found = True
+                break
+
+        if not found:
+            show_error(f"{name_val} not found in {bestiary_flag}.", root)
+            return
+
+    def on_cancel():
+        result["data"] = None
+        popup.destroy()
+
+    name_label = tk.Label(popup, text="Name:")
+    name_label.pack()
+    name_entry = tk.Entry(popup)
+    name_entry.pack()
+    name_entry.focus_set()
+    submit_btn = tk.Button(popup, text="Submit", command=on_submit)
+    submit_btn.pack(pady=10)
+    cancel_btn = tk.Button(popup, text="Cancel", command=on_cancel)
+    cancel_btn.pack(pady=10)

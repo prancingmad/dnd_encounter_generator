@@ -36,6 +36,9 @@ def on_button_click(label, root, left_frame=None, right_frame=None):
     if label == "Add Monster":
         from .bestiary_functions import add_monster
         func = add_monster
+    elif label == "Delete Monster":
+        from .bestiary_functions import delete_monster
+        func = delete_monster
     else:
         func = PAGE_FUNCTIONS.get(label)
 
@@ -132,8 +135,7 @@ def archive_page(root, left_frame, right_frame):
     button_frame = tk.Frame(right_frame)
     button_frame.pack(fill=tk.BOTH, expand=True, padx=20, pady=20)
     for label in ARCHIVE_BUTTON_LABELS:
-        btn = tk.Button(button_frame, text=label,
-                        command=lambda l=label: on_button_click(l, root, left_frame, right_frame))
+        btn = tk.Button(button_frame, text=label, command=lambda l=label: on_button_click(l, root, left_frame, right_frame))
         btn.pack(**BUTTON_PACK_OPTIONS)
 
 # Page Functions
@@ -143,7 +145,6 @@ PAGE_FUNCTIONS = {
     "Clear Data": placeholder_function,
     "Close Program": close_program,
     "Delete Member": delete_member,
-    "Delete Monster": placeholder_function,
     "Generate Encounter": placeholder_function,
     "Main Page": main_page,
     "Manage Bestiary": manage_bestiary_page,
