@@ -45,7 +45,24 @@ def generate_encounter(root):
         party_action += plyr["actions"]
 
     generated_encounter = []
+    encounter_actions = 0
+    encounter_rating = 0
+
+    for req in required_list:
+        tempcount = req["count"]
+        while tempcount > 0:
+            generated_encounter.append(req["name"])
+            tempcount -= 1
+            encounter_actions += req["actions"]
+            encounter_rating += req["challenge_rating"]
+
+    failsafe = 10
+    while encounter_rating < party_power and encounter_actions < party_action and failsafe > 0:
+        failsafe -= 1
+        rand_mon = random.choice(random_list)
+        generated_encounter.append(rand_mon["name"])
+        encounter_rating += rand_mon["challenge_rating"]
+        encounter_actions += rand_mon["actions"]
 
 
-
-    return party_power, party_action
+    return party_power, party_action, encounter_rating, encounter_actions, generated_encounter

@@ -166,6 +166,21 @@ def add_monster(root, left_frame=None, right_frame=None):
                 show_error("Missing a Value.", root)
                 return
 
+        try:
+            actions_val = int(actions_val)
+            if bestiary_flag == "required":
+                count_val = int(count_val)
+        except ValueError:
+            if bestiary_flag == "required":
+                show_error("Actions and Count must be non-decimal numbers.", root)
+            else:
+                show_error("Actions must be non-decimal number.", root)
+
+        try:
+            cr_val = float(cr_val)
+        except ValueError:
+            show_error("Challenge Rating must be a number.", root)
+
         monster_list = []
         if os.path.exists(add_monster_flag):
             with open(add_monster_flag, "r") as f:
@@ -466,6 +481,11 @@ def move_monster_to_required(root, left_frame=None, right_frame=None):
         global bestiary_flag
         name_val = name_entry.get()
         count_val = count_entry.get()
+
+        try:
+            count_val = int(count_val)
+        except ValueError:
+            show_error(f"Count must be a non-decimal number.", root)
 
         monster_list_from = []
         if os.path.exists(file_path_from):
