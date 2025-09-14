@@ -1,11 +1,11 @@
 import tkinter as tk
-import tkinter.simpledialog as simpledialog
 import json
 import os
 from .delete_member import delete_member
 from .add_member import add_member
 from .show_error import show_error
 from .update_member import update_member
+from .generate_encounter import generate_encounter
 from .config import (MAIN_PAGE_TEXT,
                      MAIN_PAGE_BUTTON_LABELS,
                      BUTTON_PACK_OPTIONS,
@@ -19,9 +19,6 @@ from .config import (MAIN_PAGE_TEXT,
                      RANDOM_FILE_PATH
                      )
 
-# Delete this later, once all the functions have been made
-def placeholder_function(root, left_frame=None, right_frame=None):
-    print("Button clicked - function not implemented yet")
 
 def create_scrollable_frame(parent):
     canvas = tk.Canvas(parent)
@@ -182,7 +179,7 @@ PAGE_FUNCTIONS = {
     "Clear Data": clear_data,
     "Close Program": close_program,
     "Delete Member": delete_member,
-    "Generate Encounter": placeholder_function,
+    "Generate Encounter": generate_encounter,
     "Main Page": main_page,
     "Manage Bestiary": manage_bestiary_page,
     "Manage Party": manage_party_page,

@@ -6,11 +6,11 @@ from .show_error import show_error
 from .config import (
     PARTY_FILE_PATH,
     RANDOM_FILE_PATH,
-    REQUIRED_FILE_PATH,
-    GENERATED_FILE_PATH
+    REQUIRED_FILE_PATH
 )
 
-def generate_encounter(root):
+def generate_encounter(root, left_frame=None, right_frame=None):
+    from .gui_functions import create_scrollable_frame
     party_list = []
     party_power = 0
     party_action = 0
@@ -21,7 +21,6 @@ def generate_encounter(root):
                 party_list = json.loads(content)
 
     random_list = []
-    encounter_power = 0
     if os.path.exists(RANDOM_FILE_PATH):
         with open(RANDOM_FILE_PATH, "r") as f:
             content = f.read().strip()
@@ -51,18 +50,36 @@ def generate_encounter(root):
     for req in required_list:
         tempcount = req["count"]
         while tempcount > 0:
-            generated_encounter.append(req["name"])
+            generated_encounter.append(req)
             tempcount -= 1
             encounter_actions += req["actions"]
             encounter_rating += req["challenge_rating"]
 
-    failsafe = 10
-    while encounter_rating < party_power and encounter_actions < party_action and failsafe > 0:
-        failsafe -= 1
-        rand_mon = random.choice(random_list)
-        generated_encounter.append(rand_mon["name"])
-        encounter_rating += rand_mon["challenge_rating"]
-        encounter_actions += rand_mon["actions"]
+    if random_list:
+        failsafe = party_action + 4
+        while encounter_rating < party_power and encounter_actions < party_action and failsafe > 0:
+            failsafe -= 1
+            rand_mon = random.choice(random_list)
+            generated_encounter.append(rand_mon)
+            encounter_rating += (rand_mon["challenge_rating"] * 0.75)
+            encounter_actions += rand_mon["actions"]
 
+    encounter_popup = tk.Toplevel(root)
+    encounter_popup.title = "Suggested Encounter"
 
-    return party_power, party_action, encounter_rating, encounter_actions, generated_encounter
+    scroll_frame = create_scrollable_frame(encounter_popup)
+    for mon in generated_encounter:
+        mon_text = f"{mon['name']} - Challenge Rating: {mon['challenge_rating']}"
+        label = tk.Label(scroll_frame, text=mon_text, anchor="w", justify="left")
+        label.pack(fill="x", pady=2)
+
+    button_frame = tk.Frame(encounter_popup)
+    button_frame.pack(side="bottom", pady=10)
+
+    okay_btn = tk.Button(button_frame, text="OK", command=encounter_popup.destroy)
+    okay_btn.pack(pady=10)
+
+    encounter_popup.grab_set()
+    root.wait_window(encounter_popup)
+
+    return

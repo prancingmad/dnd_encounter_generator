@@ -56,7 +56,7 @@ class Player():
             combat_value += SURGE_MOD
         if monk_level >= 5:
             combat_value += STUN_STRIKE_MOD
-        return combat_value + armor_value + (self.magic_items * 0.1)
+        return round(combat_value + armor_value + (self.magic_items * 0.1), 2)
 
     def get_action_count(self):
         action_count = 1.5
